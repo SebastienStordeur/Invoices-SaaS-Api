@@ -11,7 +11,6 @@ const usersSchema = new mongoose.Schema({
   },
   fullName: {
     type: String,
-    required: true,
     maxLength: 101,
   },
   companyName: {
@@ -35,6 +34,7 @@ const usersSchema = new mongoose.Schema({
   company: {
     type: String,
     maxLength: 200,
+    default: null,
   },
   created_at: {
     type: Date,
@@ -48,4 +48,4 @@ const usersSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("User", usersSchema);
+export default mongoose.model("User", usersSchema);
