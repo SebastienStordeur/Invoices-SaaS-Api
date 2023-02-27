@@ -4,17 +4,50 @@ import PDFDocument from "pdfkit";
 import Invoice from "../../models/invoices/invoices.mongo";
 
 export async function httpCreateInvoice(req: Request, res: Response) {
-  const { products } = req.body;
-  const doc = new PDFDocument();
+  try {
+    const { sender, recipient, products } = req.body;
 
-  //doc.title = 'New PDF'
-  //doc.pipe(fs.createWriteStream("../../files"));
-  doc.pipe(res);
+    const invoice = new Invoice({
+      company: sender.company,
+      companyAddress: sender.companyAddress,
+      website: sender.website,
+      phoneNumber: sender.phoneNumber,
+      toName: recipient.name,
+      toAddress: recipient.address,
+      toEmail: recipient.email,
+      toNumber: recipient.phoneNumber,
+      list: products,
+      invoiceNumber: "#INV001",
+      totalAmount: 2500,
+      userId: "63f72d2f82f9bd7faabca14d",
+    });
 
-  doc.text("HEELLO");
-  for (let product of products) {
-    doc.text(product.title);
-  }
-  doc.pipe(fs.createWriteStream("./src/files/output.pdf"));
-  doc.end();
+    invoice.save().then((bill) => {
+      res.status(201).json({ invoice: bill });
+    });
+  } catch {}
+
+  //const doc = new PDFDocument();
+
+  // doc.pipe(res);
+
+  // for (let value in sender) {
+  //   doc.text(sender[value]);
+  //   doc.moveDown(1);
+  // }
+
+  // doc.text("BILL TO");
+  // for (let value in recipient) {
+  //   doc.text(recipient[value]);
+  //   doc.moveDown(1);
+  // }
+
+  // for (let product of products) {
+  //   doc.text(product.title);
+  //   doc.moveDown(1);
+  // }
+  // doc.pipe(fs.createWriteStream("./src/files/output.pdf"));
+  // doc.end();
+
+  /** Move the pdf creation to a side function */
 }

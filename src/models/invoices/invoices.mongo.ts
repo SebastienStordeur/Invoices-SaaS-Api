@@ -29,6 +29,7 @@ const invoicesSchema = new mongoose.Schema({
   },
   invoiceDate: {
     type: Date,
+    default: Date.now,
     required: true,
   },
   toName: {
@@ -56,6 +57,10 @@ const invoicesSchema = new mongoose.Schema({
   list: {},
   totalAmount: {
     type: Number,
+    required: true,
+  },
+  userId: {
+    type: String,
     required: true,
   },
 });
