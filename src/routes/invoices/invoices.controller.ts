@@ -51,3 +51,15 @@ export async function httpCreateInvoice(req: Request, res: Response) {
 
   /** Move the pdf creation to a side function */
 }
+
+export async function httpGetInvoices(req: Request, res: Response) {
+  try {
+    const userId = "63f72d2f82f9bd7faabca14d";
+
+    const invoices = await Invoice.find({ userId: userId });
+    console.log(invoices);
+    res.status(200).json({ success: true, invoices });
+  } catch (error) {
+    return res.status(500).json({ success: false });
+  }
+}

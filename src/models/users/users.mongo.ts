@@ -41,7 +41,7 @@ const usersSchema = new mongoose.Schema({
     default: Date.now,
     required: true,
   },
-  updated_ad: {
+  updated_at: {
     type: Date,
     default: Date.now,
     required: true,

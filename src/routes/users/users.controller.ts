@@ -79,3 +79,22 @@ export async function httpLogin(req: Request, res: Response) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export async function httpUpdateProfile(req: Request, res: Response) {
+  try {
+    const { companyName, email, password, company } = req.body;
+    const userId = req.params.id;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updatedUser = {
+      companyName: companyName ? companyName : null,
+      email,
+      password: hashedPassword,
+      company: company ? company : null,
+      updated_at: Date.now(),
+    };
+
+    const currentUser = await User.findOneAndUpdate({ _id: userId }, updatedUser, { new: true });
+
+    return res.status(200).json({ currentUser });
+  } catch (error) {}
+}
