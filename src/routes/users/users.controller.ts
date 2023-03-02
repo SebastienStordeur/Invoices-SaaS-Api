@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import User from "../../models/users/users.mongo";
+import { getUserId } from "../../utils/getUserId/GetUserId";
+require("dotenv").config();
 
 export async function httpSignup(req: Request, res: Response) {
   try {
@@ -97,4 +99,16 @@ export async function httpUpdateProfile(req: Request, res: Response) {
 
     return res.status(200).json({ currentUser });
   } catch (error) {}
+}
+
+export async function httpGetUser(req: Request, res: Response) {
+  try {
+    const userId = await getUserId(req, res);
+    const user = await User.findOne({ _id: userId });
+
+    return res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
 }
